@@ -9,15 +9,19 @@ fn main() {
         println!("Welcome to Jvm Operating System");
 
         let result = Command::new("/jre/bin/java")
-            .arg("-jar")
-            .arg("/jos-engine.jar")
+            .arg("-Dlogback.configurationFile=/etc/logback.xml")
+            .arg("--module-path")
+            .arg("engine")
+            .arg("-m")
+            .arg("jos.core")
+            .arg("ir.moke.jos.core.AppRunner")
             .spawn();
 
         match result {
             Ok(mut child) => {
                 let _w = child.wait();
             },
-            Err(_err)  => println!("Error")
+            Err(_err)  => println!("{}", _err.to_string()),
         }
     }
 }
